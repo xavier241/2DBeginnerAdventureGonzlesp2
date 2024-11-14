@@ -16,11 +16,16 @@ public class Playercontroller : MonoBehaviour
     float horizontal;
     float vertical;
     public float speed = 4.0f;
+    
+
+    Animator animator;
+    Vector2 lookDirection = new Vector2(1, 0);
     // Start is called before the first frame update
     void Start()
     {
         Rigidbody2d = GetComponent<Rigidbody2D>();
         currentHealth = maxHealth;
+        animator = GetComponent<Animator>();
     }
 
     // Update is called once per frame
