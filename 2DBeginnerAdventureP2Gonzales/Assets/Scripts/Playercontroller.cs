@@ -7,7 +7,7 @@ public class Playercontroller : MonoBehaviour
     
     public int maxHealth = 5;
     public float timeInvincible = 2;
-    public int health { get { return currentHealth; } }
+    public int Health { get { return currentHealth; } }
     int currentHealth;
 
     bool isInvincible;
@@ -15,7 +15,7 @@ public class Playercontroller : MonoBehaviour
     Rigidbody2D Rigidbody2d;
     float horizontal;
     float vertical;
-    public float speed = 4.0f;
+    public float speed = 3.0f;
     
 
     Animator animator;
@@ -33,6 +33,19 @@ public class Playercontroller : MonoBehaviour
     {
         horizontal = Input.GetAxis("Horizontal");
         vertical = Input.GetAxis("Vertical");
+
+        Vector2 move = new Vector2(horizontal, vertical);
+
+        if (!Mathf.Approximately(move.x, 0.0f) || !Mathf.Approximately(move.y, 0.0f))
+        {
+            lookDirection.Set(move.x, move.y);
+            lookDirection.Normalize();
+        }
+        animator.SetFloat("Look X", lookDirection.x);
+        animator.SetFloat("Look Y", lookDirection.y);
+        animator.SetFloat("speed",move.magnitude);  
+
+        
         if (isInvincible)
         {
             invincibleTimer -= Time.deltaTime;  
@@ -55,6 +68,8 @@ public class Playercontroller : MonoBehaviour
     {
         if(amount < 0)
         {
+            animator.SetTrigger("Hit");
+
             if (isInvincible)
             {
                 return;
