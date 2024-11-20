@@ -6,13 +6,14 @@ public class Playercontroller : MonoBehaviour
 {
     
     public int maxHealth = 5;
+    public GameObject projectileprefab;
     public float timeInvincible = 2;
     public int Health { get { return currentHealth; } }
     int currentHealth;
 
     bool isInvincible;
     float invincibleTimer;
-    Rigidbody2D Rigidbody2d;
+    Rigidbody2D rigidbody2d;
     float horizontal;
     float vertical;
     public float speed = 3.0f;
@@ -23,7 +24,7 @@ public class Playercontroller : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Rigidbody2d = GetComponent<Rigidbody2D>();
+        rigidbody2d = GetComponent<Rigidbody2D>();
         currentHealth = maxHealth;
         animator = GetComponent<Animator>();
     }
@@ -43,7 +44,7 @@ public class Playercontroller : MonoBehaviour
         }
         animator.SetFloat("Look X", lookDirection.x);
         animator.SetFloat("Look Y", lookDirection.y);
-        animator.SetFloat("speed",move.magnitude);  
+        animator.SetFloat("Speed", move.magnitude);  
 
         
         if (isInvincible)
@@ -55,14 +56,14 @@ public class Playercontroller : MonoBehaviour
             }
 
         }
-        Debug.Log(horizontal);
+       
 
-        Vector2 position = Rigidbody2d.position;
+        Vector2 position = rigidbody2d.position;
         position.x = position.x + speed * horizontal * Time.deltaTime;
         position.y = position.y + speed * vertical * Time.deltaTime;
 
         transform.position = position;
-        Rigidbody2d.MovePosition(position);
+        rigidbody2d.MovePosition(position);
     }
     public void ChangeHealth(int amount)
     {
@@ -79,5 +80,12 @@ public class Playercontroller : MonoBehaviour
         }
         currentHealth = Mathf.Clamp(currentHealth + amount, 0, maxHealth);
         Debug.Log(currentHealth + "/" + maxHealth);
+    }
+
+    void Launch()
+    {
+        GameObject projectileObject = Instantiate(projectileprefab, rigidbody2d.position + Vector2.up * 0.5f, Quaternion.identity);
+
+        Projectile projectile = projectileObject.GetComponent<Projectile>();
     }
 }
