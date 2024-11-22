@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 public class Playercontroller : MonoBehaviour
@@ -14,6 +15,7 @@ public class Playercontroller : MonoBehaviour
     bool isInvincible;
     float invincibleTimer;
     Rigidbody2D rigidbody2d;
+    
     float horizontal;
     float vertical;
     public float speed = 3.0f;
@@ -32,6 +34,10 @@ public class Playercontroller : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+       
+        {
+           
+        }
         horizontal = Input.GetAxis("Horizontal");
         vertical = Input.GetAxis("Vertical");
 
@@ -55,8 +61,14 @@ public class Playercontroller : MonoBehaviour
                 isInvincible = false;
             }
 
+            
+           
         }
-       
+        if (Input.GetKeyDown(KeyCode.C))
+        {
+            Launch();
+
+        }
 
         Vector2 position = rigidbody2d.position;
         position.x = position.x + speed * horizontal * Time.deltaTime;
@@ -87,5 +99,8 @@ public class Playercontroller : MonoBehaviour
         GameObject projectileObject = Instantiate(projectileprefab, rigidbody2d.position + Vector2.up * 0.5f, Quaternion.identity);
 
         Projectile projectile = projectileObject.GetComponent<Projectile>();
+        projectile.Launch(lookDirection, 300);
+
+        animator.SetTrigger("Launch");
     }
 }
